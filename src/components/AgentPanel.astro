@@ -38,9 +38,6 @@ const chips = [
             </form>
           </div>
 
-          <div class="border-t border-line px-5 py-2.5 text-[12px] text-faint">
-            Sample data. Real answers ship with the actual reels and their numbers.
-          </div>
         </div>
       </div>
     </div>
@@ -199,12 +196,13 @@ const chips = [
   async function playFrom(start) {
     const token = ++run;
     thread.innerHTML = '';
-    for (let i = start; i < turns.length; i++) {
-      if (token !== run) return;
+    let i = start;
+    while (token === run) {
       await playTurn(i, token);
       if (token !== run) return;
-      if (reduce && i - start >= 0 && i + 1 < turns.length) continue;
-      if (i + 1 < turns.length) await sleep(1400);
+      if (!reduce) await sleep(1400);
+      i = (i + 1) % turns.length;
+      if (i === 0 && token === run) thread.innerHTML = '';
     }
   }
 

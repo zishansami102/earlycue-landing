@@ -27,7 +27,7 @@ const chips = [
           </div>
 
           <!-- auto-scrolling chat thread -->
-          <div id="thread" class="h-[300px] overflow-y-hidden px-5 pt-3 [scrollbar-width:none]"></div>
+          <div id="thread" class="h-[330px] overflow-y-hidden px-5 pt-3 [scrollbar-width:none]"></div>
 
           <div class="px-5 pb-3.5 pt-2">
             <form id="askForm" class="flex items-center gap-2 rounded-full border border-line px-4 py-1">
@@ -124,7 +124,7 @@ const chips = [
 
   function userBubble(text) {
     return el(`<div class="flex items-start justify-end gap-2.5 pt-1">
-      <p class="max-w-[75%] rounded-xl bg-tint3 px-4 py-2 text-[14px] text-ink">${text}</p>
+      <p class="max-w-[75%] rounded-xl bg-tint3 px-3 py-1.5 text-[14px] text-ink">${text}</p>
       <span class="mt-0.5 flex h-6 w-6 flex-none items-center justify-center rounded-full bg-tint3 text-[9px] font-bold text-body">You</span>
     </div>`);
   }

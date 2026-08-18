@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Satoshi (self-hosted, Fontshare) */
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/KFIAZD4RUMEZIYV6FQ3T3GP5PDBDB6JY.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/7AHDUZ4A7LFLVFUIFSARGIWCRQJHISQP.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/GHM6WVH6MILNYOOCXHXB5GTSGNTMGXZR.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+/* Geist Mono (self-hosted, latin) */
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/fonts/or3nQ6H-1_WfwkMZI_qYFrcdmhHkjko.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center whitespace-nowrap rounded bg-ink px-5 py-2.5 text-sm font-medium text-white transition;
+  }
+  .btn:hover { transform: translateY(-1px); background: #000; }
+  .btn:active { transform: scale(.98); }
+  .btn-big { @apply px-[30px] py-3.5 text-base font-semibold; }
+  .btn-ghost {
+    background: rgba(255,255,255,.14);
+    border: 1px solid rgba(255,255,255,.55);
+    backdrop-filter: blur(4px);
+  }
+  .btn-ghost:hover { background: rgba(255,255,255,.22); }
+  .sec-head h2 { font-size: clamp(1.9rem, 3.6vw, 2.75rem); }
+}
+
+html { scroll-behavior: smooth; }
+body {
+  @apply bg-white text-ink font-sans antialiased;
+  line-height: 1.55;
+}
+h1, h2, h3 { letter-spacing: -0.03em; line-height: 1.08; font-weight: 700; }
+
+/* scroll reveal */
+.rv {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1);
+}
+.rv.in { opacity: 1; transform: none; }
+
+/* hero scroll zoom (progressive enhancement) */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-bg {
+      animation: heroZoom linear both;
+      animation-timeline: scroll();
+      animation-range: 0 90svh;
+    }
+  }
+}
+@keyframes heroZoom { from { transform: scale(1.1); } to { transform: scale(1); } }
+
+/* marquee */
+.marq { animation: marq 36s linear infinite; }
+@keyframes marq { to { transform: translateX(-50%); } }
+
+/* breakout pill pulse */
+.pulse-dot { animation: pulse 1.8s ease-out infinite; }
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(20,20,18,.35); }
+  70% { box-shadow: 0 0 0 9px rgba(20,20,18,0); }
+  100% { box-shadow: 0 0 0 0 rgba(20,20,18,0); }
+}
+
+/* faq */
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-weight: 500; color: #8a8a80; font-size: 1.3rem; line-height: 1; }
+.faq details[open] summary::after { content: "\2212"; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .rv { opacity: 1; transform: none; transition: none; }
+  .marq, .pulse-dot { animation: none; }
+}

@@ -1,0 +1,15 @@
+---
+const formats = [
+  'Street interview', 'Spokesperson', 'Testimonial', 'Product demo', 'Founder story',
+  'Before and after', 'Unboxing', 'Voiceover b-roll', 'Skit', 'Tutorial',
+  'Green screen react', 'Day in the life', 'Offer-first', 'Studio shot', 'Duet reply',
+];
+---
+<section class="overflow-hidden pb-2.5 pt-9" aria-label="Format types EarlyCue labels">
+  <p class="mb-[18px] text-center text-[.95rem] text-faint">Every reel we track gets decomposed and labelled by format</p>
+  <div class="marq flex w-max gap-3">
+    {[...formats, ...formats].map((f) => (
+      <span class="whitespace-nowrap rounded-full border border-line bg-white px-[17px] py-2 text-[.92rem] text-body">{f}</span>
+    ))}
+  </div>
+</section>

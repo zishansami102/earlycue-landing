@@ -1,0 +1,79 @@
+---
+const reels = [
+  { src: '/assets/t1.jpg', alt: 'Street interview reel still', label: 'street interview' },
+  { src: '/assets/t2.jpg', alt: 'Product demo reel still', label: 'product demo' },
+  { src: '/assets/t3.jpg', alt: 'Unboxing reel still', label: 'unboxing' },
+  { src: '/assets/t4.jpg', alt: 'Before and after reel still', label: 'before / after' },
+];
+const chips = [
+  "What's working in skincare this week?",
+  'Has this format peaked?',
+  'Write the script for our version.',
+];
+---
+<div class="relative z-20 mx-auto -mt-[92px] w-full max-w-wrap px-7">
+  <div id="agentPanel" class="mx-auto max-w-[820px] overflow-hidden rounded-2xl bg-white shadow-[0_24px_70px_-18px_rgba(25,30,25,.28)]">
+    <div class="border-b border-line px-[22px] py-[13px] text-sm font-medium text-faint">Ask EarlyCue</div>
+    <div id="chips" class="flex flex-wrap gap-2 px-[22px] pb-0.5 pt-3.5">
+      {chips.map((c, i) => (
+        <button
+          class:list={['chip rounded-full border px-3.5 py-2 text-[13.5px] font-medium transition', i === 0 ? 'on border-ink bg-tint3 text-ink' : 'border-line text-body hover:border-ink/30']}
+          data-a={i}
+        >{c}</button>
+      ))}
+    </div>
+    <div class="min-h-[80px] px-[22px] pb-0.5 pt-3.5">
+      <p id="answerText" class="text-[15.5px] text-ink"></p>
+    </div>
+    <div class="px-[22px] pb-4 pt-1.5">
+      <p class="mb-2.5 text-[12.5px] text-faint">Reels behind this call</p>
+      <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-[repeat(4,minmax(0,132px))]">
+        {reels.map((r) => (
+          <figure class="m-0">
+            <img class="block w-full rounded-[10px] object-cover [aspect-ratio:9/16]" src={r.src} alt={r.alt} loading="lazy" />
+            <figcaption class="mt-1.5 font-mono text-[10px] text-faint">{r.label}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+    <div class="border-t border-line px-[22px] py-[11px] text-[12.5px] text-faint">
+      Sample data. Real answers ship with the actual reels and their numbers.
+    </div>
+  </div>
+</div>
+
+<script>
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const answers = [
+    'Three formats are accelerating. The fastest: a street-interview hook, first seen 9 days ago, now used by 41 unrelated creators.',
+    "Still climbing. This week's videos in it outperform last week's by 1.8x, and no saturation signal yet.",
+    'Draft ready: 4 shots, 2 hook variants, 21 seconds. Built from the top performer in your niche this week.',
+  ];
+  const txt = document.getElementById('answerText');
+  let timer;
+
+  function show(i) {
+    const a = answers[i];
+    clearInterval(timer);
+    if (reduce) { txt.textContent = a; return; }
+    let n = 0;
+    txt.textContent = '';
+    timer = setInterval(() => {
+      n += 2;
+      txt.textContent = a.slice(0, n);
+      if (n >= a.length) clearInterval(timer);
+    }, 14);
+  }
+
+  document.getElementById('chips').addEventListener('click', (e) => {
+    const b = e.target.closest('.chip');
+    if (!b) return;
+    document.querySelectorAll('.chip').forEach((c) => c.classList.remove('on', 'border-ink', 'bg-tint3', 'text-ink'));
+    document.querySelectorAll('.chip').forEach((c) => c.classList.add('border-line', 'text-body'));
+    b.classList.remove('border-line', 'text-body');
+    b.classList.add('on', 'border-ink', 'bg-tint3', 'text-ink');
+    show(+b.dataset.a);
+  });
+
+  show(0);
+</script>

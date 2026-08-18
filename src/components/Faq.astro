@@ -1,0 +1,39 @@
+---
+const faqs = [
+  {
+    q: 'How is this different from trend tools and ad-spy libraries?',
+    a: 'They surface what already won. The ad-spy standard for "this works" is an ad still running after 30 days, and trend feeds rank videos that already went viral. We track formats and their lifecycle, and call them while they\'re still rising, so you move before everyone else does.',
+  },
+  {
+    q: 'Where does the data come from?',
+    a: "Public short-form video on Instagram and TikTok, tracked continuously. We record how each video's numbers move over time, and videos that overperform their creator's own baseline get broken down frame by frame and labelled by format.",
+  },
+  {
+    q: 'What do I actually get?',
+    a: 'Trend calls for your niche with the evidence behind them, an agent you can ask anything the index can answer, and a ready-to-shoot brief for the format you pick: script, shot list, hook variants, and timing.',
+  },
+  {
+    q: 'Which niches are covered?',
+    a: "All the popular niches are tracked already. If yours isn't, mark it on the platform and we add it to the radar and go deep on it, the same tracking, breakdowns and calls as every other niche.",
+  },
+  {
+    q: 'How fresh are the calls?',
+    a: "Fresh reels are tracked continuously and every video's numbers are recorded over time, so a call updates as the format moves. You see where a format is on its curve today, not where it was last month.",
+  },
+];
+---
+<section class="faq bg-white py-16">
+  <div class="mx-auto w-full max-w-wrap px-7">
+    <div class="sec-head rv mb-[34px] max-w-[680px]">
+      <h2>Questions, answered straight.</h2>
+    </div>
+    <div class="rv max-w-[760px]">
+      {faqs.map((f) => (
+        <details class="border-b border-line">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-0.5 py-[18px] text-[1.05rem] font-semibold">{f.q}</summary>
+          <p class="max-w-[60ch] px-0.5 pb-[18px] text-[.98rem] text-body">{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

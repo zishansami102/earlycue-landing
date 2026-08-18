@@ -1,0 +1,39 @@
+---
+const niches = [
+  { key: 'skincare', label: 'Skincare & beauty' },
+  { key: 'fitness', label: 'Fitness' },
+  { key: 'food', label: 'Food & recipes' },
+  { key: 'fashion', label: 'Fashion' },
+];
+const tiles = [1, 2, 3, 4, 5, 6, 7];
+---
+<section class="bg-white py-16">
+  <div class="mx-auto w-full max-w-wrap px-7">
+    <div class="sec-head rv mb-[34px] max-w-[680px]">
+      <h2>Every niche, doomscrolled at scale.</h2>
+      <p class="mt-2.5 max-w-[55ch] text-[1.06rem] text-body">
+        All the popular niches, tracked. Need one we don't cover yet? Mark it on the platform and the radar goes deep on it too.
+      </p>
+    </div>
+    <div class="grid gap-x-[18px] gap-y-[22px] md:grid-cols-2">
+      {niches.map((n) => (
+        <div class="rv">
+          <h3 class="mb-2.5 flex items-baseline gap-2.5 text-[1.05rem]">
+            {n.label}
+            <span class="font-mono text-[11px] font-normal text-faint">tracked hourly</span>
+          </h3>
+          <div class="grid grid-cols-4 gap-1.5 sm:grid-cols-7" aria-label={`${n.key} reel thumbnails`}>
+            {tiles.map((i) => (
+              <img
+                class:list={['block w-full rounded-lg object-cover [aspect-ratio:9/16]', i > 4 ? 'hidden sm:block' : '']}
+                src={`/assets/tiles/${n.key}-0${i}.jpg`}
+                alt=""
+                loading="lazy"
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

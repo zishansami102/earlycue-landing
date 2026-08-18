@@ -82,7 +82,8 @@ h1, h2, h3 { letter-spacing: -0.03em; line-height: 1.08; font-weight: 700; }
 @keyframes heroZoom { from { transform: scale(1.1); } to { transform: scale(1); } }
 
 /* marquee */
-.marq { animation: marq 36s linear infinite; }
+.marq { animation: marq 38s linear infinite; }
+.marq-rev { animation-direction: reverse; animation-duration: 46s; }
 @keyframes marq { to { transform: translateX(-50%); } }
 
 /* breakout pill pulse */

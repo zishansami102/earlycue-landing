@@ -1,4 +1,6 @@
 ---
+import PanelSidebar from './PanelSidebar.tsx';
+
 const reels = [
   { src: '/assets/t1.jpg', alt: 'Street interview reel still', label: 'street interview' },
   { src: '/assets/t2.jpg', alt: 'Product demo reel still', label: 'product demo' },
@@ -9,71 +11,186 @@ const chips = [
   "What's working in skincare this week?",
   'Has this format peaked?',
   'Write the script for our version.',
+  'Analyze why this video did 5M views?',
+  'Which hook fits my product?',
 ];
 ---
 <div class="relative z-20 mx-auto -mt-[92px] w-full max-w-wrap px-7">
-  <div id="agentPanel" class="mx-auto max-w-[820px] overflow-hidden rounded-2xl bg-white shadow-[0_24px_70px_-18px_rgba(25,30,25,.28)]">
-    <div class="border-b border-line px-[22px] py-[13px] text-sm font-medium text-faint">Ask EarlyCue</div>
-    <div id="chips" class="flex flex-wrap gap-2 px-[22px] pb-0.5 pt-3.5">
-      {chips.map((c, i) => (
-        <button
-          class:list={['chip rounded-full border px-3.5 py-2 text-[13.5px] font-medium transition', i === 0 ? 'on border-ink bg-tint3 text-ink' : 'border-line text-body hover:border-ink/30']}
-          data-a={i}
-        >{c}</button>
-      ))}
-    </div>
-    <div class="min-h-[80px] px-[22px] pb-0.5 pt-3.5">
-      <p id="answerText" class="text-[15.5px] text-ink"></p>
-    </div>
-    <div class="px-[22px] pb-4 pt-1.5">
-      <p class="mb-2.5 text-[12.5px] text-faint">Reels behind this call</p>
-      <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-[repeat(4,minmax(0,132px))]">
-        {reels.map((r) => (
-          <figure class="m-0">
-            <img class="block w-full rounded-[10px] object-cover [aspect-ratio:9/16]" src={r.src} alt={r.alt} loading="lazy" />
-            <figcaption class="mt-1.5 font-mono text-[10px] text-faint">{r.label}</figcaption>
-          </figure>
-        ))}
+  <!-- wide white frame -->
+  <div class="mx-auto max-w-[980px] rounded-[20px] bg-white p-3 shadow-[0_24px_70px_-18px_rgba(25,30,25,.28)] sm:p-4">
+    <div class="flex overflow-hidden rounded-xl border border-line" id="agentPanel">
+      <PanelSidebar />
+      <div class="min-w-0 flex-1">
+        <div class="border-b border-line px-5 py-[13px] text-sm font-medium text-faint">Ask EarlyCue</div>
+
+        <div id="chips" class="flex flex-wrap gap-2 px-5 pb-0.5 pt-3.5">
+          {chips.map((c, i) => (
+            <button class:list={['chip', i === 0 ? 'on' : '']} data-a={i}>{c}</button>
+          ))}
+        </div>
+
+        <!-- chat thread -->
+        <div class="px-5 pb-2 pt-4">
+          <!-- user bubble -->
+          <div class="flex items-start justify-end gap-2.5">
+            <p id="userMsg" class="max-w-[75%] rounded-xl bg-tint3 px-4 py-2.5 text-[14.5px] text-ink"></p>
+            <span class="mt-0.5 flex h-7 w-7 flex-none items-center justify-center rounded-full bg-tint3 text-[10px] font-bold text-body">You</span>
+          </div>
+
+          <!-- agent turn -->
+          <div class="mt-4 flex items-start gap-2.5">
+            <span class="mt-0.5 flex h-7 w-7 flex-none items-center justify-center rounded-full bg-ink text-[11px] font-bold text-white">E</span>
+            <div class="min-w-0 flex-1">
+              <p class="text-[13px] font-semibold">EarlyCue agent</p>
+              <div id="toolCalls" class="mt-2 flex flex-col gap-1.5"></div>
+              <p id="answerText" class="mt-2.5 min-h-[44px] text-[14.5px] text-ink"></p>
+              <div class="mt-2">
+                <p class="mb-2 text-[12px] text-faint">Reels behind this call</p>
+                <div class="grid grid-cols-2 gap-2.5 sm:grid-cols-[repeat(4,minmax(0,120px))]">
+                  {reels.map((r) => (
+                    <figure class="m-0">
+                      <img class="block w-full rounded-[10px] object-cover [aspect-ratio:9/16]" src={r.src} alt={r.alt} loading="lazy" />
+                      <figcaption class="mt-1.5 font-mono text-[10px] text-faint">{r.label}</figcaption>
+                    </figure>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- input bar -->
+        <div class="px-5 pb-4 pt-2">
+          <form id="askForm" class="flex items-center gap-2 rounded-full border border-line px-4 py-1.5">
+            <input class="min-w-0 flex-1 bg-transparent py-1.5 text-[14px] outline-none placeholder:text-faint" type="text" placeholder="Ask EarlyCue anything about your niche..." aria-label="Ask EarlyCue" />
+            <button class="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-ink text-white" type="submit" aria-label="Send">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+          </form>
+        </div>
+
+        <div class="border-t border-line px-5 py-[11px] text-[12.5px] text-faint">
+          Sample data. Real answers ship with the actual reels and their numbers.
+        </div>
       </div>
-    </div>
-    <div class="border-t border-line px-[22px] py-[11px] text-[12.5px] text-faint">
-      Sample data. Real answers ship with the actual reels and their numbers.
     </div>
   </div>
 </div>
 
 <script>
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const answers = [
-    'Three formats are accelerating. The fastest: a street-interview hook, first seen 9 days ago, now used by 41 unrelated creators.',
-    "Still climbing. This week's videos in it outperform last week's by 1.8x, and no saturation signal yet.",
-    'Draft ready: 4 shots, 2 hook variants, 21 seconds. Built from the top performer in your niche this week.',
+
+  const turns = [
+    {
+      tools: [
+        'scan_reels(niche: "skincare", window: "7d")|1,284 reels',
+        'cluster_formats()|17 formats',
+        'rank_by_velocity()|top 3 accelerating',
+      ],
+      a: 'Three formats are accelerating. The fastest: a street-interview hook, first seen 9 days ago, now used by 41 unrelated creators.',
+    },
+    {
+      tools: [
+        'format_curve("street interview")|day 9 of curve',
+        'compare_cohorts(last week, this week)|+1.8x',
+      ],
+      a: "Still climbing. This week's videos in it outperform last week's by 1.8x, and no saturation signal yet.",
+    },
+    {
+      tools: [
+        'fetch_top_performers("skincare")|12 reels',
+        'extract_structure(hook, body, cta)|21s template',
+        'draft_brief()|4 shots, 2 hooks',
+      ],
+      a: 'Draft ready: 4 shots, 2 hook variants, 21 seconds. Built from the top performer in your niche this week.',
+    },
+    {
+      tools: [
+        'fetch_video(url)|5.0M views',
+        'decompose_frames()|hook 0:00-0:03',
+        'compare_to_creator_median()|38x baseline',
+      ],
+      a: "It's the hook: a POV question in the first 3 seconds. The video runs 38x this creator's own median, so the format did the work, not the account.",
+    },
+    {
+      tools: [
+        'embed_product_profile()|profile ready',
+        'search_hooks(similarity > 0.8)|23 matches',
+        'score_transferability()|top 5 ranked',
+      ],
+      a: 'Five hooks transfer to your product. Best fit: the street-interview POV question, already proven in 3 adjacent niches.',
+    },
   ];
+
+  const chipEls = document.querySelectorAll('#chips .chip');
+  const userMsg = document.getElementById('userMsg');
+  const toolBox = document.getElementById('toolCalls');
   const txt = document.getElementById('answerText');
   let timer;
+  const timeouts = [];
+
+  function toolRow(spec, done) {
+    const [call, result] = spec.split('|');
+    const row = document.createElement('div');
+    row.className = 'flex items-center gap-2 rounded-lg bg-tint2 border border-line px-3 py-1.5 font-mono text-[11px] text-body';
+    row.innerHTML = `<span class="tool-state flex h-3.5 w-3.5 flex-none items-center justify-center">${
+      done
+        ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#141412" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'
+        : '<span class="h-2 w-2 animate-pulse rounded-full bg-faint"></span>'
+    }</span><span class="truncate">${call}</span><span class="ml-auto flex-none text-faint">${result}</span>`;
+    return row;
+  }
 
   function show(i) {
-    const a = answers[i];
+    const t = turns[i];
     clearInterval(timer);
-    if (reduce) { txt.textContent = a; return; }
-    let n = 0;
+    timeouts.forEach(clearTimeout);
+    timeouts.length = 0;
+    userMsg.textContent = chipEls[i].textContent;
+    toolBox.innerHTML = '';
     txt.textContent = '';
-    timer = setInterval(() => {
-      n += 2;
-      txt.textContent = a.slice(0, n);
-      if (n >= a.length) clearInterval(timer);
-    }, 14);
+
+    if (reduce) {
+      t.tools.forEach((s) => toolBox.appendChild(toolRow(s, true)));
+      txt.textContent = t.a;
+      return;
+    }
+
+    t.tools.forEach((s, j) => {
+      timeouts.push(
+        setTimeout(() => {
+          const row = toolRow(s, false);
+          toolBox.appendChild(row);
+          timeouts.push(
+            setTimeout(() => {
+              row.replaceWith(toolRow(s, true));
+            }, 420)
+          );
+        }, j * 480)
+      );
+    });
+
+    timeouts.push(
+      setTimeout(() => {
+        let n = 0;
+        timer = setInterval(() => {
+          n += 2;
+          txt.textContent = t.a.slice(0, n);
+          if (n >= t.a.length) clearInterval(timer);
+        }, 14);
+      }, t.tools.length * 480 + 300)
+    );
   }
 
   document.getElementById('chips').addEventListener('click', (e) => {
     const b = e.target.closest('.chip');
     if (!b) return;
-    document.querySelectorAll('.chip').forEach((c) => c.classList.remove('on', 'border-ink', 'bg-tint3', 'text-ink'));
-    document.querySelectorAll('.chip').forEach((c) => c.classList.add('border-line', 'text-body'));
-    b.classList.remove('border-line', 'text-body');
-    b.classList.add('on', 'border-ink', 'bg-tint3', 'text-ink');
+    chipEls.forEach((c) => c.classList.remove('on'));
+    b.classList.add('on');
     show(+b.dataset.a);
   });
+
+  document.getElementById('askForm').addEventListener('submit', (e) => e.preventDefault());
 
   show(0);
 </script>

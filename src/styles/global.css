@@ -47,6 +47,11 @@
   }
   .btn-ghost:hover { background: rgba(255,255,255,.22); }
   .sec-head h2 { font-size: clamp(1.9rem, 3.6vw, 2.75rem); }
+  .chip {
+    @apply rounded-full border border-line px-3.5 py-2 text-[13.5px] font-medium text-body transition;
+  }
+  .chip:hover { border-color: rgba(20,20,18,.3); }
+  .chip.on { @apply border-ink bg-tint3 text-ink; }
 }
 
 html { scroll-behavior: smooth; }

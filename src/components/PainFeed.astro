@@ -1,0 +1,323 @@
+---
+// Pain section — "The Obituary Feed".
+// A generic trend-tool panel gets forensically stamped: by the time a feed
+// shows a trend, it already peaked. Spec + parked siblings: docs/landing-roadmap.md
+const cards = [
+  {
+    src: '/assets/gen/si-01.jpg',
+    title: 'Street interview',
+    views: '4.2M',
+    spike: '812% this week',
+    firstSeen: '41 days ago',
+    peakDay: 22,
+    alertDay: 41,
+    stamp: 'PEAKED 19 DAYS AGO',
+    tilt: -7,
+  },
+  {
+    src: '/assets/gen/pain-ba.jpg',
+    title: 'Before / after',
+    views: '6.1M',
+    spike: '640% this week',
+    firstSeen: '52 days ago',
+    peakDay: 25,
+    alertDay: 52,
+    stamp: '312 BRANDS RAN IT',
+    tilt: -5,
+  },
+  {
+    src: '/assets/gen/pain-recipe.jpg',
+    title: 'Recipe hack',
+    views: '2.8M',
+    spike: '505% this week',
+    firstSeen: '38 days ago',
+    peakDay: 19,
+    alertDay: 38,
+    stamp: 'SATURATED',
+    tilt: -8,
+  },
+];
+---
+<section id="painFeed" class="bg-white py-16">
+  <div class="mx-auto w-full max-w-wrap px-7">
+    <div class="grid items-center gap-10 md:grid-cols-[10fr_11fr] md:gap-14">
+
+      <!-- copy -->
+      <div class="sec-head rv max-w-[520px]">
+        <p class="mb-3 font-mono text-[11px] uppercase tracking-[.14em] text-faint">Every other trend tool</p>
+        <h2>Trend tools show you trends. After they peak.</h2>
+        <p class="mt-3.5 text-[1.06rem] text-body">
+          A trend feed ranks videos that have already gone viral. Ad-spy tools call an ad
+          proven once it has survived 30 days. Both are lagging indicators &mdash; a month of
+          survivorship bias baked in before you ever see the signal.
+        </p>
+        <p class="mt-5 max-w-[38ch] text-[1.15rem] font-bold leading-snug text-ink">
+          By the time it&rsquo;s in a feed, the window is closed. The reach went to whoever
+          moved in week one.
+        </p>
+      </div>
+
+      <!-- mock trend-tool panel -->
+      <div class="rv">
+        <p class="mb-2 flex items-center justify-between font-mono text-[11px] uppercase tracking-[.14em] text-faint">
+          <span>A typical trend feed &mdash; not EarlyCue</span>
+          <button id="pfReplay" class="pf-replay hidden items-center gap-1 normal-case tracking-normal text-faint transition hover:text-ink" type="button" aria-label="Replay animation">&#8635; replay</button>
+        </p>
+        <div class="overflow-hidden rounded-xl border border-line bg-white shadow-[0_18px_44px_-20px_rgba(25,30,25,.18)]">
+          <!-- fake app chrome -->
+          <div class="flex items-center justify-between border-b border-line px-4 py-2.5">
+            <div class="flex items-center gap-1.5 text-[12.5px]">
+              <span class="rounded-full bg-tint3 px-3 py-1 font-semibold text-ink">&#128293; Viral now</span>
+              <span class="px-3 py-1 text-faint">Top ads</span>
+              <span class="hidden px-3 py-1 text-faint sm:block">Hooks</span>
+            </div>
+            <span class="font-mono text-[10.5px] text-faint">sort: most views</span>
+          </div>
+
+          <div class="flex flex-col gap-2.5 p-3 sm:p-3.5">
+            {cards.map((c) => (
+              <div class="pf-card relative rounded-[10px] border border-line bg-white p-2.5">
+                <div class="flex gap-3">
+                  <img class="pf-thumb block w-[58px] flex-none rounded-lg object-cover [aspect-ratio:9/16]" src={c.src} alt={`${c.title} reel still`} loading="lazy" />
+                  <div class="min-w-0 flex-1">
+                    <div class="flex items-start justify-between gap-2">
+                      <div>
+                        <p class="text-[.95rem] font-bold leading-tight">{c.title}</p>
+                        <p class="mt-1 text-[1.15rem] font-bold leading-none tracking-[-0.02em]">{c.views} <span class="text-[.75rem] font-medium text-faint">views</span></p>
+                      </div>
+                      <span class="pf-save flex-none rounded-md border border-line px-2.5 py-1 text-[11.5px] font-medium text-body">Save</span>
+                    </div>
+                    <span class="pf-spike mt-1.5 inline-flex items-center gap-1 rounded-full bg-[#e7f2ea] px-2 py-[3px] font-mono text-[10.5px] text-[#1d6b40]">&#9650; {c.spike}</span>
+
+                    <!-- forensic overlay (revealed in act 2) -->
+                    <div class="pf-forensic">
+                      <div class="mt-2.5 border-t border-dashed border-line pt-2">
+                        <p class="font-mono text-[10px] uppercase tracking-[.08em] text-faint">Format lifecycle &middot; first seen {c.firstSeen}</p>
+                        <svg class="pf-spark mt-1 block h-[56px] w-full" viewBox="0 0 420 56" fill="none" preserveAspectRatio="none" aria-hidden="true">
+                          <path class="pf-curve" d="M6 50 C 90 48, 200 42, 260 22 C 275 14, 292 10, 306 12 C 330 16, 370 25, 400 33" stroke="#9a9a90" stroke-width="1.7" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+                          <circle class="pf-peak-dot" cx="300" cy="11" r="2.6" fill="#9a9a90"/>
+                          <circle class="pf-dot" cx="400" cy="33" r="3.4" fill="#b0352c"/>
+                        </svg>
+                        <div class="relative -mt-[52px] h-[52px] w-full" aria-hidden="true">
+                          <span class="pf-lbl2 absolute left-[50%] top-0 -translate-x-1/2 text-faint">peak &middot; day {c.peakDay}</span>
+                          <span class="pf-lbl2 absolute right-0 top-[68%] font-medium text-[#b0352c]">your alert &middot; day {c.alertDay}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <span class="pf-stamp" style={`--tilt:${c.tilt}deg`} aria-hidden="true">{c.stamp}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <p class="mt-2.5 font-mono text-[10.5px] text-faint">Illustrative UI &mdash; structurally, this is how every trend feed works.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .pf-card {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1);
+  }
+  .pf-card.pf-in { opacity: 1; transform: none; }
+
+  .pf-thumb { transition: filter .5s ease; }
+  .pf-card.pf-dead .pf-thumb { filter: grayscale(1) brightness(.94); }
+  .pf-save { transition: opacity .3s ease; }
+  .pf-card.pf-dead .pf-save { opacity: 0; }
+  .pf-card.pf-dead { background: #fdfdfb; }
+
+  .pf-forensic {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height .55s cubic-bezier(.22,1,.36,1), opacity .45s ease .1s;
+  }
+  .pf-forensic.pf-show { max-height: 130px; opacity: 1; }
+
+  .pf-lbl2 {
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 10px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity .3s ease;
+    background: rgba(255,255,255,.92);
+    border-radius: 3px;
+    padding: 1px 4px;
+  }
+
+  .pf-spike { transition: opacity .4s ease; }
+  .pf-card.pf-dead .pf-spike { opacity: .5; text-decoration: line-through; text-decoration-color: #b0352c; text-decoration-thickness: 1.5px; }
+
+  /* left-to-right wipe reveal; clip-path is consistent across engines,
+     unlike stroke-dash tricks with non-scaling-stroke */
+  .pf-spark {
+    clip-path: inset(-6px 102% -6px -6px);
+  }
+  .pf-spark.pf-draw {
+    transition: clip-path .7s ease-out;
+    clip-path: inset(-6px -6px -6px -6px);
+  }
+
+  .pf-dot, .pf-peak-dot { opacity: 0; transition: opacity .25s ease; }
+  .pf-spark.pf-marked .pf-dot, .pf-spark.pf-marked .pf-peak-dot { opacity: 1; }
+  .pf-spark.pf-marked .pf-dot { animation: pfPop .35s cubic-bezier(.2,1.4,.4,1) both; }
+  .pf-spark.pf-marked + div .pf-lbl2 { opacity: 1; }
+  @keyframes pfPop { from { transform: scale(.2); transform-origin: center; transform-box: fill-box; } to { transform: scale(1); transform-origin: center; transform-box: fill-box; } }
+
+  .pf-stamp {
+    position: absolute;
+    right: 14px;
+    top: 16px;
+    z-index: 2;
+    padding: 4px 10px 3px;
+    border: 2px solid #b0352c;
+    border-radius: 4px;
+    color: #b0352c;
+    background: rgba(255,255,255,.72);
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 12px;
+    letter-spacing: .08em;
+    white-space: nowrap;
+    opacity: 0;
+    transform: rotate(calc(var(--tilt, -7deg) + 4deg)) scale(1.7);
+  }
+  .pf-stamp.pf-slam {
+    opacity: 1;
+    transform: rotate(var(--tilt, -7deg)) scale(1);
+    transition: transform .16s cubic-bezier(.25,0,.35,1), opacity .1s ease;
+  }
+  .pf-card.pf-shake { animation: pfShake .3s ease-out .05s; }
+
+  /* mobile: stamp slams across the card center instead of the (cramped) top-right */
+  @media (max-width: 639px) {
+    .pf-stamp {
+      left: 50%;
+      right: auto;
+      top: 50%;
+      font-size: 11px;
+      background: rgba(255,255,255,.86);
+      transform: translate(-50%,-50%) rotate(calc(var(--tilt, -7deg) + 4deg)) scale(1.6);
+    }
+    .pf-stamp.pf-slam { transform: translate(-50%,-50%) rotate(var(--tilt, -7deg)) scale(1); }
+  }
+  @keyframes pfShake {
+    0%, 100% { transform: translate(0,0); }
+    25% { transform: translate(1.5px,-1px); }
+    50% { transform: translate(-1.5px,1px); }
+    75% { transform: translate(1px,-.5px); }
+  }
+
+  .pf-replay {
+    display: inline-flex;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1);
+  }
+  .pf-replay.pf-in { opacity: 1; transform: none; }
+
+  /* reduced motion: everything lands in final state, no transitions */
+  :global(#painFeed.pf-instant) .pf-card,
+  :global(#painFeed.pf-instant) .pf-forensic,
+  :global(#painFeed.pf-instant) .pf-spark,
+  :global(#painFeed.pf-instant) .pf-dot,
+  :global(#painFeed.pf-instant) .pf-peak-dot,
+  :global(#painFeed.pf-instant) .pf-save,
+  :global(#painFeed.pf-instant) .pf-lbl2,
+  :global(#painFeed.pf-instant) .pf-spike,
+  :global(#painFeed.pf-instant) .pf-stamp,
+  :global(#painFeed.pf-instant) .pf-thumb,
+  :global(#painFeed.pf-instant) .pf-replay {
+    transition: none !important;
+    animation: none !important;
+  }
+</style>
+
+<script>
+  const section = document.getElementById('painFeed');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const cards = [...section.querySelectorAll('.pf-card')];
+  const replay = document.getElementById('pfReplay');
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  let run = 0;
+
+  function finalState() {
+    section.classList.add('pf-instant');
+    cards.forEach((card) => {
+      card.classList.add('pf-in', 'pf-dead');
+      card.querySelector('.pf-forensic').classList.add('pf-show');
+      card.querySelector('.pf-spark').classList.add('pf-draw');
+      card.querySelector('.pf-spark').classList.add('pf-marked');
+      card.querySelector('.pf-stamp').classList.add('pf-slam');
+    });
+    replay.classList.add('pf-in');
+  }
+
+  function reset() {
+    section.classList.remove('pf-instant');
+    cards.forEach((card) => {
+      card.classList.remove('pf-in', 'pf-dead', 'pf-shake');
+      card.querySelector('.pf-forensic').classList.remove('pf-show');
+      card.querySelector('.pf-spark').classList.remove('pf-draw');
+      card.querySelector('.pf-spark').classList.remove('pf-marked');
+      card.querySelector('.pf-stamp').classList.remove('pf-slam');
+    });
+    replay.classList.remove('pf-in');
+  }
+
+  async function play() {
+    if (reduce) return finalState();
+    const token = ++run;
+
+    // act 1: the feed looks great
+    for (const card of cards) {
+      card.classList.add('pf-in');
+      await sleep(140);
+    }
+    await sleep(950);
+
+    // act 2: the autopsy, card by card
+    for (const card of cards) {
+      if (token !== run) return;
+      card.querySelector('.pf-forensic').classList.add('pf-show');
+      await sleep(380);
+      card.querySelector('.pf-spark').classList.add('pf-draw');
+      await sleep(600);
+      card.querySelector('.pf-spark').classList.add('pf-marked');
+      await sleep(420);
+      card.querySelector('.pf-stamp').classList.add('pf-slam');
+      card.classList.add('pf-dead', 'pf-shake');
+      await sleep(850);
+      card.classList.remove('pf-shake');
+    }
+
+    if (token !== run) return;
+    await sleep(250);
+    replay.classList.add('pf-in');
+  }
+
+  replay.addEventListener('click', async () => {
+    ++run;
+    reset();
+    await sleep(450);
+    play();
+  });
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          io.disconnect();
+          play();
+        }
+      });
+    },
+    { threshold: 0.35 }
+  );
+  io.observe(section);
+</script>

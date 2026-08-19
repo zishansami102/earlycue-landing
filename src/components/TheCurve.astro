@@ -1,0 +1,354 @@
+---
+// Signature section — the format lifecycle curve.
+// Mirrors PainFeed: same curve grammar, same red alert dot, but zoomed out,
+// with EarlyCue's green entry on the rising slope and the window shaded.
+// Absorbs the old HowItWorks steps as annotations. Spec: docs/landing-roadmap.md
+const steps = [
+  {
+    n: '01',
+    t: 'Track',
+    b: "Thousands of fresh reels an hour, every video's numbers recorded over time.",
+  },
+  {
+    n: '02',
+    t: 'Decompose',
+    b: 'Overperformers get broken down into hook, body and CTA, then labelled by format.',
+  },
+  {
+    n: '03',
+    t: 'Call + brief',
+    b: 'You get the rising format, the fit for your product, and the script to shoot it.',
+  },
+];
+const clusters = [
+  { thumbs: ['/assets/gen/si-02.jpg', '/assets/gen/si-03.jpg', '/assets/gen/si-04.jpg'], label: '3 creators', left: '15%', top: '72%', late: false },
+  { thumbs: ['/assets/gen/si-05.jpg', '/assets/gen/si-06.jpg', '/assets/gen/si-07.jpg', '/assets/gen/si-01.jpg'], label: 'hundreds', left: '55.5%', top: '2%', late: false },
+  { thumbs: ['/assets/gen/si-brand-01.jpg', '/assets/gen/si-brand-02.jpg'], label: 'brands pile in · day 40+', left: '80.5%', top: '72%', late: true },
+];
+
+// Scatter field: each dot = one tracked reel; density follows the curve height,
+// so the lifecycle line reads as a fit over data, not an illustration.
+// Deterministic (seeded) so SSR output is stable.
+const segs = [
+  [[20, 326], [180, 322], [300, 310], [420, 220]],
+  [[420, 220], [500, 160], [560, 60], [620, 52]],
+  [[620, 52], [660, 48], [690, 80], [730, 140]],
+  [[730, 140], [790, 230], [880, 300], [980, 318]],
+];
+const bez = (p, t) => {
+  const u = 1 - t;
+  return [
+    u * u * u * p[0][0] + 3 * u * u * t * p[1][0] + 3 * u * t * t * p[2][0] + t * t * t * p[3][0],
+    u * u * u * p[0][1] + 3 * u * u * t * p[1][1] + 3 * u * t * t * p[2][1] + t * t * t * p[3][1],
+  ];
+};
+let seed = 7;
+const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const dots = [];
+for (let i = 0; i < 300 && dots.length < 110; i++) {
+  const [x, y] = bez(segs[Math.floor(rnd() * 4)], rnd());
+  const h = 331 - y;
+  if (rnd() > h / 280 + 0.08) continue;
+  const jy = (rnd() - 0.5) * Math.min(36, 10 + h * 0.16);
+  dots.push({
+    x: +(x + (rnd() - 0.5) * 12).toFixed(1),
+    y: +Math.min(y + jy, 326).toFixed(1),
+    r: +(1.6 + rnd() * 1.1).toFixed(2),
+    o: +(0.09 + rnd() * 0.15).toFixed(2),
+    d: Math.round(((x - 20) / 960) * 1400),
+  });
+}
+---
+<section id="how" class="bg-tint py-16">
+  <div class="mx-auto w-full max-w-wrap px-7">
+    <div class="sec-head rv mb-9 max-w-[680px]">
+      <p class="mb-3 font-mono text-[11px] uppercase tracking-[.14em] text-faint">With EarlyCue</p>
+      <h2>EarlyCue calls it on the way up.</h2>
+      <p class="mt-3 max-w-[58ch] text-[1.06rem] text-body">
+        Every reel format follows the same curve: a few creators find it, it spreads, it
+        peaks, it dies. EarlyCue tracks each format&rsquo;s life live &mdash; and calls yours
+        while it&rsquo;s still climbing.
+      </p>
+    </div>
+
+    <div id="curveWrap" class="rv">
+      <div class="relative">
+        <svg id="curveSvg" class="block h-[clamp(250px,36vw,400px)] w-full" viewBox="0 0 1000 360" fill="none" preserveAspectRatio="none" aria-label="Format lifecycle curve: EarlyCue calls the format on day 5 while it is rising; trend feeds alert on day 34 after the peak. The weeks between are your window.">
+          <!-- the window: under-curve area clipped between the two entries -->
+          <clipPath id="cvWindowClip"><rect x="355" y="0" width="425" height="360"/></clipPath>
+          <path class="cv-window" d="M20 326 C 180 322, 300 310, 420 220 C 500 160, 560 60, 620 52 C 660 48, 690 80, 730 140 C 790 230, 880 300, 980 318 L980 331 L20 331 Z" fill="#1d6b40" opacity=".11" clip-path="url(#cvWindowClip)"/>
+
+          <!-- baseline -->
+          <line x1="20" y1="331" x2="980" y2="331" stroke="rgba(20,20,18,.14)" stroke-width="1"/>
+
+          <!-- scatter field: one dot per tracked reel -->
+          <g class="cv-dots">
+            {dots.map((p) => (
+              <circle class="cv-dot-i" cx={p.x} cy={p.y} r={p.r} fill="#141412" style={`--o:${p.o};transition-delay:${p.d}ms`}/>
+            ))}
+          </g>
+
+          <!-- lifecycle curve: the fit -->
+          <g class="cv-spark">
+            <path d="M20 326 C 180 322, 300 310, 420 220 C 500 160, 560 60, 620 52 C 660 48, 690 80, 730 140 C 790 230, 880 300, 980 318" stroke="#9a9a90" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+          </g>
+
+          <!-- entry markers -->
+          <g class="cv-mark cv-mark-ec">
+            <line x1="355" y1="262" x2="355" y2="331" stroke="#1d6b40" stroke-width="1.2" stroke-dasharray="3 4"/>
+            <circle class="cv-ring" cx="355" cy="258" r="6" fill="none" stroke="#1d6b40" stroke-width="1.4"/>
+            <circle cx="355" cy="258" r="5" fill="#1d6b40"/>
+          </g>
+          <g class="cv-mark cv-mark-tt">
+            <line x1="780" y1="234" x2="780" y2="331" stroke="#b0352c" stroke-width="1.2" stroke-dasharray="3 4"/>
+            <circle cx="780" cy="228" r="5" fill="#b0352c"/>
+          </g>
+        </svg>
+
+        <!-- overlay labels (HTML for crisp type; % positions track the svg) -->
+        <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+          <span class="cv-lbl cv-phase" style="left:6%;bottom:-1.6rem">born</span>
+          <span class="cv-lbl cv-phase" style="left:36%;bottom:-1.6rem">climbing</span>
+          <span class="cv-lbl cv-phase" style="left:60.5%;bottom:-1.6rem">peak</span>
+          <span class="cv-lbl cv-phase" style="left:84%;bottom:-1.6rem">saturated</span>
+
+          {clusters.map((cl) => (
+            <span class:list={['cv-cluster absolute flex items-center gap-1.5', cl.late ? 'cv-late' : '']} style={`left:${cl.left};top:${cl.top}`}>
+              <span class="flex">
+                {cl.thumbs.map((t, i) => (
+                  <img src={t} alt="" loading="lazy" class="h-8 w-6 rounded-[5px] border-2 border-white object-cover shadow-sm" style={i > 0 ? 'margin-left:-7px' : ''} />
+                ))}
+              </span>
+              <span class="cv-lbl !static">{cl.label}</span>
+            </span>
+          ))}
+
+          <span class="cv-tag cv-tag-ec absolute" style="left:35.5%;top:50%;transform:translateX(-100%)">
+            <b>EarlyCue call &middot; day 5</b>
+            <i>3 unrelated creators, accelerating</i>
+            <em>&#9650; 1.8x week over week</em>
+          </span>
+          <span class="cv-tag cv-tag-tt absolute" style="left:79.5%;top:42%">
+            <b>trend feeds alert &middot; day 34</b>
+            <i>already everywhere</i>
+          </span>
+
+          <span class="cv-window-lbl absolute" style="left:56.5%;top:80%;transform:translateX(-50%)">
+            <b>your window</b>
+            <i>~4 weeks of uncontested reach</i>
+          </span>
+        </div>
+      </div>
+
+      <!-- mobile legend: replaces the floating tags below 640px -->
+      <div class="mt-10 flex flex-col gap-1.5 font-mono text-[10.5px] text-body sm:hidden" aria-hidden="true">
+        <span class="flex items-center gap-2">
+          <i class="h-2.5 w-2.5 flex-none rounded-full bg-[#1d6b40] not-italic"></i>
+          <b class="font-bold text-[#1d6b40]">EarlyCue call &middot; day 5</b>
+          <span class="text-faint">3 creators, accelerating</span>
+        </span>
+        <span class="flex items-center gap-2">
+          <i class="h-2.5 w-2.5 flex-none rounded-full bg-[#b0352c] not-italic"></i>
+          <b class="font-bold text-[#b0352c]">trend feeds alert &middot; day 34</b>
+          <span class="text-faint">already everywhere</span>
+        </span>
+      </div>
+
+      <p class="mt-10 font-mono text-[10.5px] text-faint">Same curve as the feed above &mdash; different entry point. Illustrative; day counts vary by format.</p>
+    </div>
+
+    <!-- how the call gets made -->
+    <div class="mt-10 grid gap-4 md:grid-cols-3">
+      {steps.map((s) => (
+        <div class="rv rounded-xl border border-line bg-white p-5">
+          <div class="flex items-baseline gap-2.5">
+            <span class="font-mono text-[11px] text-faint">{s.n}</span>
+            <h3 class="text-[1.08rem]">{s.t}</h3>
+          </div>
+          <p class="mt-1.5 text-[.95rem] text-body">{s.b}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cv-lbl {
+    position: absolute;
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 10.5px;
+    color: #8a8a80;
+    background: rgba(250,249,245,.92);
+    border-radius: 3px;
+    padding: 1px 4px;
+    white-space: nowrap;
+  }
+
+  .cv-spark { clip-path: inset(-8px 102% -8px -8px); }
+  .cv-spark.cv-draw {
+    transition: clip-path 1.6s cubic-bezier(.4,0,.2,1);
+    clip-path: inset(-8px -8px -8px -8px);
+  }
+
+  .cv-window { opacity: 0; transition: opacity .8s ease; }
+  .cv-window.cv-in { opacity: .11; }
+  .cv-window-lbl {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity .8s ease;
+  }
+  .cv-window-lbl b {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #1d6b40;
+  }
+  .cv-window-lbl i {
+    font-style: normal;
+    font-size: 9.5px;
+    color: #1d6b40;
+    opacity: .75;
+  }
+  .cv-window-lbl.cv-in { opacity: 1; }
+
+  .cv-dot-i { opacity: 0; transition: opacity .5s ease; }
+  .cv-dots.cv-in .cv-dot-i { opacity: var(--o, .12); }
+
+  .cv-ring {
+    display: none;
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: cvRing 2.6s ease-out infinite;
+  }
+  .cv-mark-ec.cv-in .cv-ring { display: block; }
+  @keyframes cvRing {
+    0% { transform: scale(.5); opacity: .6; }
+    70% { transform: scale(2.1); opacity: 0; }
+    100% { transform: scale(2.1); opacity: 0; }
+  }
+
+  .cv-late img { filter: grayscale(1) brightness(.96); }
+
+  .cv-mark { opacity: 0; transform: translateY(-8px); transition: opacity .4s ease, transform .4s cubic-bezier(.2,1,.4,1); }
+  .cv-mark.cv-in { opacity: 1; transform: none; }
+
+  .cv-cluster { opacity: 0; transform: scale(.85); transition: opacity .4s ease, transform .4s cubic-bezier(.2,1.4,.4,1); }
+  .cv-cluster.cv-in { opacity: 1; transform: scale(1); }
+
+  .cv-tag {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    font-family: 'Geist Mono', ui-monospace, monospace;
+    font-size: 11px;
+    line-height: 1.45;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity .45s ease, translate .45s cubic-bezier(.2,1,.4,1);
+    translate: 0 -6px;
+  }
+  .cv-tag.cv-in { opacity: 1; translate: 0 0; }
+  .cv-tag b { font-weight: 700; }
+  .cv-tag i { font-style: normal; font-size: 10px; color: #8a8a80; }
+  .cv-tag em {
+    font-style: normal;
+    font-size: 9.5px;
+    color: #1d6b40;
+    background: #e7f2ea;
+    border-radius: 99px;
+    padding: 2px 7px;
+    margin-top: 3px;
+  }
+  .cv-tag-ec b { color: #1d6b40; }
+  .cv-tag-ec { padding-right: 12px; text-align: right; align-items: flex-end; }
+  .cv-tag-tt b { color: #b0352c; }
+  .cv-tag-tt { padding-left: 12px; }
+
+  @media (max-width: 639px) {
+    .cv-tag, .cv-cluster, .cv-window-lbl i { display: none; }
+    .cv-lbl { font-size: 9px; }
+    .cv-window-lbl b { font-size: 9.5px; letter-spacing: .08em; }
+  }
+
+  :global(#how.cv-instant) .cv-spark,
+  :global(#how.cv-instant) .cv-dot-i,
+  :global(#how.cv-instant) .cv-ring,
+  :global(#how.cv-instant) .cv-window,
+  :global(#how.cv-instant) .cv-window-lbl,
+  :global(#how.cv-instant) .cv-mark,
+  :global(#how.cv-instant) .cv-cluster,
+  :global(#how.cv-instant) .cv-tag {
+    transition: none !important;
+  }
+</style>
+
+<script>
+  const section = document.getElementById('how');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  const spark = section.querySelector('.cv-spark');
+  const dotsG = section.querySelector('.cv-dots');
+  const win = section.querySelector('.cv-window');
+  const winLbl = section.querySelector('.cv-window-lbl');
+  const markEc = section.querySelector('.cv-mark-ec');
+  const markTt = section.querySelector('.cv-mark-tt');
+  const tagEc = section.querySelector('.cv-tag-ec');
+  const tagTt = section.querySelector('.cv-tag-tt');
+  const clusters = [...section.querySelectorAll('.cv-cluster')];
+
+  function showAll() {
+    spark.classList.add('cv-draw');
+    dotsG.classList.add('cv-in');
+    win.classList.add('cv-in');
+    winLbl.classList.add('cv-in');
+    markEc.classList.add('cv-in');
+    markTt.classList.add('cv-in');
+    tagEc.classList.add('cv-in');
+    tagTt.classList.add('cv-in');
+    clusters.forEach((c) => c.classList.add('cv-in'));
+  }
+
+  async function play() {
+    if (reduce) {
+      section.classList.add('cv-instant');
+      return showAll();
+    }
+    dotsG.classList.add('cv-in');             // reels flow in, left to right…
+    spark.classList.add('cv-draw');           // …and the fit emerges over them
+    await sleep(350);
+    clusters[0].classList.add('cv-in');       // 3 creators on the rise
+    await sleep(300);
+    markEc.classList.add('cv-in');            // EarlyCue enters
+    tagEc.classList.add('cv-in');
+    await sleep(500);
+    clusters[1].classList.add('cv-in');       // the peak crowd
+    await sleep(550);
+    markTt.classList.add('cv-in');            // trend feeds finally alert
+    tagTt.classList.add('cv-in');
+    await sleep(350);
+    clusters[2].classList.add('cv-in');       // competitor ships, too late
+    await sleep(400);
+    win.classList.add('cv-in');               // the window you got
+    winLbl.classList.add('cv-in');
+  }
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          io.disconnect();
+          play();
+        }
+      });
+    },
+    { threshold: 0.35 }
+  );
+  io.observe(document.getElementById('curveWrap'));
+</script>

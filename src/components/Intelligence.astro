@@ -1,0 +1,348 @@
+---
+// The intelligence section — EarlyCue studying a reel, live.
+// Olunix-pattern: tear down a native artifact in front of the visitor, chips alive,
+// ratios not big numbers. Ours: beat-by-beat reel decomposition + ranked decisions.
+// Spec + siblings: docs/landing-roadmap.md
+const BOOKING_LINK = 'https://cal.com/zishansami/earlycue-discovery';
+
+const beats = [
+  {
+    thumb: '/assets/gen/brief-s1.jpg',
+    tag: 'HOOK · 0:00–0:03',
+    desc: 'POV question to a stranger',
+    chip: '▲ rising · 41 creators',
+    tone: 'up',
+  },
+  {
+    thumb: '/assets/gen/brief-s2.jpg',
+    tag: 'SETUP · 0:03–0:08',
+    desc: 'Product handoff, real reaction',
+    chip: 'fresh to your audience',
+    tone: 'up',
+  },
+  {
+    thumb: '/assets/gen/brief-s3.jpg',
+    tag: 'PAYOFF · 0:08–0:14',
+    desc: 'Texture close-up, on camera',
+    chip: 'beats voiceover 2.3x',
+    tone: 'up',
+  },
+  {
+    thumb: '/assets/gen/brief-s4.jpg',
+    tag: 'CTA · 0:14–0:21',
+    desc: 'Comment-bait question',
+    chip: 'proven in 3 niches',
+    tone: 'up',
+  },
+  {
+    thumb: null,
+    tag: 'SOUND',
+    desc: 'Upbeat · 92 BPM',
+    chip: 'trending 6 days',
+    tone: 'flat',
+  },
+];
+
+const options = [
+  { t: 'POV question to strangers', chip: '▲ rising · stops the scroll', tone: 'win' },
+  { t: 'Before / after reveal', chip: 'coasting · 7 weeks old', tone: 'flat' },
+  { t: 'Green-screen react', chip: 'spent · skip it', tone: 'dead' },
+];
+---
+<section id="intel" class="bg-white py-16">
+  <div class="mx-auto w-full max-w-wrap px-7">
+    <div class="sec-head rv mb-10 max-w-[720px]">
+      <p class="mb-3 font-mono text-[11px] uppercase tracking-[.14em] text-faint">The intelligence</p>
+      <h2>A reel is seven decisions.<br class="hidden md:block"/> Stop guessing all seven.</h2>
+      <p class="mt-3 max-w-[58ch] text-[1.06rem] text-body">
+        EarlyCue breaks every winning reel in your niche into its parts, and scores each one
+        by what&rsquo;s rising, what&rsquo;s spent, and what your audience hasn&rsquo;t seen yet.
+        You decide with the answers open.
+      </p>
+    </div>
+
+    <div class="grid items-start gap-10 md:grid-cols-[8fr_10fr] md:gap-12">
+
+      <!-- left: the argument + the decision rail -->
+      <div class="rv flex min-w-0 flex-col gap-6">
+        <ul class="flex flex-col gap-4">
+          <li class="max-w-[46ch] text-[.98rem] text-body">
+            <b class="text-ink">Why it won, not that it won.</b> Every overperformer is broken
+            down beat by beat, with the numbers under each beat.
+          </li>
+          <li class="max-w-[46ch] text-[.98rem] text-body">
+            <b class="text-ink">Hooks earn the stop. Freshness earns the watch.</b> A proven hook
+            keeps working. What makes viewers stay is what they haven&rsquo;t seen &mdash; a new
+            setup, a new payoff, new information, a fresh way of telling it. Retention is what
+            goes viral.
+          </li>
+          <li class="max-w-[46ch] text-[.98rem] text-body">
+            <b class="text-ink">You make the call.</b> Hooks, payoffs, sounds &mdash; ranked
+            live. Pick one, ask for variations, or ask why. The agent answers.
+          </li>
+        </ul>
+
+        <div>
+          <p class="mb-2.5 font-mono text-[11px] uppercase tracking-[.14em] text-faint">Your hook, ranked</p>
+          <div class="flex flex-col gap-2">
+            {options.map((o, i) => (
+              <div class:list={[
+                'it-opt flex items-center justify-between gap-3 rounded-[10px] border px-3.5 py-2.5',
+                o.tone === 'win' ? 'border-[#1d6b40]/45 bg-[#f4faf6]' : 'border-line bg-white',
+              ]} data-i={i}>
+                <span class="flex items-center gap-2.5 text-[.92rem] font-semibold">
+                  {o.tone === 'win' && (
+                    <span class="it-check flex h-[18px] w-[18px] flex-none items-center justify-center rounded-full bg-[#1d6b40]">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                    </span>
+                  )}
+                  <span class:list={[o.tone === 'dead' ? 'text-faint line-through decoration-[#b0352c]/70' : 'text-ink']}>{o.t}</span>
+                </span>
+                <span class:list={[
+                  'whitespace-nowrap font-mono text-[10px]',
+                  o.tone === 'win' ? 'text-[#1d6b40]' : o.tone === 'dead' ? 'text-[#b0352c]' : 'text-faint',
+                ]}>{o.chip}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <p class="max-w-[40ch] text-[1.12rem] font-bold leading-snug text-ink">
+          Attention runs on contrast. Contrast belongs to whoever moves first.
+        </p>
+
+        <a class="btn btn-big self-start" href={BOOKING_LINK}>Book a call</a>
+      </div>
+
+      <!-- right: the studying panel -->
+      <div id="itPanel" class="rv min-w-0">
+        <p class="mb-2 flex items-center justify-between font-mono text-[11px] uppercase tracking-[.14em] text-faint">
+          <span>Inside the breakdown</span>
+          <button id="itReplay" class="it-replay items-center gap-1 normal-case tracking-normal text-faint transition hover:text-ink" type="button" aria-label="Replay animation">&#8635; replay</button>
+        </p>
+
+        <div class="overflow-hidden rounded-xl border border-line bg-white shadow-[0_18px_44px_-20px_rgba(25,30,25,.18)]">
+          <div class="flex items-center justify-between border-b border-line px-4 py-2.5">
+            <span class="font-mono text-[10.5px] text-faint">@maya.skin &middot; skincare &middot; posted 4 days ago</span>
+            <span class="it-studying inline-flex items-center gap-1.5 rounded-full border border-line px-2.5 py-1 font-mono text-[10px] text-body">
+              <i class="it-pulse h-1.5 w-1.5 rounded-full bg-ink not-italic"></i>Studying
+            </span>
+          </div>
+
+          <div class="flex flex-col gap-4 p-4 sm:flex-row">
+            <!-- phone mock -->
+            <div class="relative w-[152px] flex-none self-center overflow-hidden rounded-[14px] bg-ink sm:self-start">
+              <img class="block w-full object-cover [aspect-ratio:9/16]" src="/assets/gen/brief-s1.jpg" alt="Street interview reel being analyzed" />
+              <div class="it-scan pointer-events-none absolute inset-x-0 top-0 h-10" aria-hidden="true"></div>
+              <div class="absolute bottom-2 left-2.5 right-10 text-white [text-shadow:0_1px_6px_rgba(0,0,0,.6)]">
+                <p class="text-[10px] font-bold">@maya.skin</p>
+                <p class="mt-0.5 truncate text-[8.5px] opacity-90">&#9835; original audio</p>
+              </div>
+              <div class="absolute bottom-12 right-2 flex flex-col items-center gap-2 text-white [text-shadow:0_1px_6px_rgba(0,0,0,.6)]" aria-hidden="true">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.6 2.3 5 5.7 5c2 0 3.4 1.1 4.3 2.6h4c.9-1.5 2.3-2.6 4.3-2.6 3.4 0 5.3 3.6 3.7 6.7C19.5 16.4 12 21 12 21z" transform="scale(.9) translate(1.3,1.3)"/></svg>
+                <span class="text-[8.5px] font-semibold">84K</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.3 8.6 8.6 0 0 1-3.7-.8L3 20l1.1-5.5a8.2 8.2 0 0 1-.9-3.7A8.4 8.4 0 0 1 11.7 2.5h.8a8.4 8.4 0 0 1 8.5 8.2z"/></svg>
+                <span class="text-[8.5px] font-semibold">1.2K</span>
+              </div>
+            </div>
+
+            <!-- beat rows -->
+            <div class="flex min-w-0 flex-1 flex-col gap-2">
+              {beats.map((b) => (
+                <div class="it-beat flex items-center gap-2.5 rounded-[10px] border border-line px-2.5 py-2">
+                  {b.thumb ? (
+                    <img class="block h-11 w-8 flex-none rounded-md object-cover" src={b.thumb} alt="" loading="lazy" />
+                  ) : (
+                    <span class="flex h-11 w-8 flex-none items-center justify-center rounded-md bg-tint3 text-[13px]">&#9835;</span>
+                  )}
+                  <div class="min-w-0 flex-1">
+                    <div class="flex items-center justify-between gap-2">
+                      <p class="whitespace-nowrap font-mono text-[9px] uppercase tracking-[.08em] text-faint">{b.tag}</p>
+                      <span class:list={[
+                        'it-chip whitespace-nowrap rounded-full px-2 py-[3px] font-mono text-[9.5px]',
+                        b.tone === 'up' ? 'bg-[#e7f2ea] text-[#1d6b40]' : 'border border-line text-faint',
+                      ]}>{b.chip}</span>
+                    </div>
+                    <p class="mt-0.5 truncate text-[.86rem] font-semibold leading-tight">{b.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- ratio footer -->
+          <div class="it-foot flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-line bg-tint px-4 py-2.5 font-mono text-[10.5px] text-body">
+            <span><b class="font-bold text-ink">38x</b> this creator&rsquo;s median</span>
+            <span class="text-faint">&middot;</span>
+            <span>format: <b class="font-bold text-ink">street interview</b></span>
+            <span class="text-faint">&middot;</span>
+            <span class="text-[#1d6b40]">entry: day 5 &middot; &#9650; climbing</span>
+          </div>
+
+          <!-- takeaway -->
+          <div class="it-take border-t border-line px-4 py-3 text-[.92rem] text-body">
+            <span class="mr-2 inline-block h-[10px] w-[3px] translate-y-[1px] rounded bg-ink"></span>
+            <b class="text-ink">EarlyCue takes it apart. You make the call.</b>
+            Every element scored twice: proven enough to work, fresh enough to hold.
+          </div>
+        </div>
+
+        <p class="mt-2.5 font-mono text-[10.5px] text-faint">Sample breakdown &mdash; live panels ship with the actual reels and their numbers.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .it-beat {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .45s cubic-bezier(.22,1,.36,1), transform .45s cubic-bezier(.22,1,.36,1), background-color .35s ease;
+  }
+  .it-beat.it-in { opacity: 1; transform: none; }
+  .it-beat.it-hot { background: #fefef5; }
+
+  .it-chip { opacity: 0; transition: opacity .3s ease .1s; }
+  .it-beat.it-read .it-chip { opacity: 1; }
+
+  .it-foot, .it-take {
+    opacity: 0;
+    transition: opacity .5s ease;
+  }
+  .it-foot.it-in, .it-take.it-in { opacity: 1; }
+
+  .it-opt {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .45s cubic-bezier(.22,1,.36,1), transform .45s cubic-bezier(.22,1,.36,1);
+  }
+  .it-opt.it-in { opacity: 1; transform: none; }
+  .it-check { transform: scale(0); transition: transform .3s cubic-bezier(.2,1.4,.4,1) .15s; }
+  .it-opt.it-in .it-check { transform: scale(1); }
+
+  @media (max-width: 639px) {
+    .it-opt { flex-direction: column; align-items: flex-start; gap: 4px; }
+    .it-opt > span:last-child { white-space: normal; }
+    .it-beat .it-chip { max-width: 60%; overflow: hidden; text-overflow: ellipsis; }
+  }
+
+  .it-pulse { animation: itPulse 1.6s ease-out infinite; }
+  @keyframes itPulse {
+    0% { box-shadow: 0 0 0 0 rgba(20,20,18,.3); }
+    70% { box-shadow: 0 0 0 6px rgba(20,20,18,0); }
+    100% { box-shadow: 0 0 0 0 rgba(20,20,18,0); }
+  }
+
+  .it-scan {
+    background: linear-gradient(180deg, transparent, rgba(255,255,255,.35), transparent);
+    opacity: 0;
+  }
+  .it-scan.it-run { opacity: 1; animation: itScan 2.6s linear infinite; }
+  @keyframes itScan { from { transform: translateY(-40px); } to { transform: translateY(270px); } }
+
+  .it-replay {
+    display: inline-flex;
+    opacity: 0;
+    transition: opacity .5s ease;
+  }
+  .it-replay.it-in { opacity: 1; }
+
+  :global(#intel.it-instant) .it-beat,
+  :global(#intel.it-instant) .it-chip,
+  :global(#intel.it-instant) .it-foot,
+  :global(#intel.it-instant) .it-take,
+  :global(#intel.it-instant) .it-opt,
+  :global(#intel.it-instant) .it-check,
+  :global(#intel.it-instant) .it-pulse,
+  :global(#intel.it-instant) .it-scan,
+  :global(#intel.it-instant) .it-replay {
+    transition: none !important;
+    animation: none !important;
+  }
+</style>
+
+<script>
+  const section = document.getElementById('intel');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  const beats = [...section.querySelectorAll('.it-beat')];
+  const opts = [...section.querySelectorAll('.it-opt')];
+  const foot = section.querySelector('.it-foot');
+  const take = section.querySelector('.it-take');
+  const scan = section.querySelector('.it-scan');
+  const replay = document.getElementById('itReplay');
+  let run = 0;
+
+  function finalState() {
+    section.classList.add('it-instant');
+    beats.forEach((b) => b.classList.add('it-in', 'it-read'));
+    opts.forEach((o) => o.classList.add('it-in'));
+    foot.classList.add('it-in');
+    take.classList.add('it-in');
+    replay.classList.add('it-in');
+  }
+
+  function reset() {
+    section.classList.remove('it-instant');
+    beats.forEach((b) => b.classList.remove('it-in', 'it-read', 'it-hot'));
+    opts.forEach((o) => o.classList.remove('it-in'));
+    foot.classList.remove('it-in');
+    take.classList.remove('it-in');
+    scan.classList.remove('it-run');
+    replay.classList.remove('it-in');
+  }
+
+  async function play() {
+    if (reduce) return finalState();
+    const token = ++run;
+    scan.classList.add('it-run');
+
+    // the agent reads the reel, beat by beat
+    for (const b of beats) {
+      if (token !== run) return;
+      b.classList.add('it-in', 'it-hot');
+      await sleep(360);
+      b.classList.add('it-read');   // chip lands: the score for this beat
+      await sleep(220);
+      b.classList.remove('it-hot');
+    }
+
+    if (token !== run) return;
+    await sleep(250);
+    foot.classList.add('it-in');    // the ratios
+    await sleep(400);
+    take.classList.add('it-in');
+    scan.classList.remove('it-run');
+
+    // evidence in → now the decision rail fills, best option checked
+    await sleep(450);
+    for (const o of opts) {
+      if (token !== run) return;
+      o.classList.add('it-in');
+      await sleep(260);
+    }
+    replay.classList.add('it-in');
+  }
+
+  replay.addEventListener('click', async () => {
+    ++run;
+    reset();
+    await sleep(400);
+    play();
+  });
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          io.disconnect();
+          play();
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+  io.observe(document.getElementById('itPanel'));
+</script>

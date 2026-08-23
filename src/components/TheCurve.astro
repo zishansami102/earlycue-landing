@@ -21,9 +21,9 @@ const steps = [
   },
 ];
 const clusters = [
-  { thumbs: ['/assets/gen/si-02.jpg', '/assets/gen/si-03.jpg', '/assets/gen/si-04.jpg'], label: '3 creators', left: '15%', top: '72%', late: false },
-  { thumbs: ['/assets/gen/si-05.jpg', '/assets/gen/si-06.jpg', '/assets/gen/si-07.jpg', '/assets/gen/si-01.jpg'], label: 'hundreds', left: '55.5%', top: '2%', late: false },
-  { thumbs: ['/assets/gen/si-brand-01.jpg', '/assets/gen/si-brand-02.jpg'], label: 'brands pile in · day 40+', left: '80.5%', top: '72%', late: true },
+  { thumbs: ['/assets/gen/pg-01.jpg', '/assets/gen/pg-02.jpg', '/assets/gen/pg-03.jpg'], label: '3 creators', left: '15%', top: '72%', late: false },
+  { thumbs: ['/assets/gen/pg-04.jpg', '/assets/gen/pg-05.jpg', '/assets/gen/pg-06.jpg', '/assets/gen/pg-07.jpg'], label: 'hundreds, every niche', left: '55.5%', top: '2%', late: false },
+  { thumbs: ['/assets/gen/pg-brand-01.jpg', '/assets/gen/pg-brand-02.jpg'], label: 'brands pile in · day 40+', left: '80.5%', top: '72%', late: true },
 ];
 
 // Scatter field: each dot = one tracked reel; density follows the curve height,
@@ -56,6 +56,8 @@ for (let i = 0; i < 300 && dots.length < 110; i++) {
     r: +(1.6 + rnd() * 1.1).toFixed(2),
     o: +(0.09 + rnd() * 0.15).toFixed(2),
     d: Math.round(((x - 20) / 960) * 1400),
+    tw: +(3.2 + rnd() * 2.8).toFixed(1),
+    twd: Math.round(((x - 20) / 960) * 1400 + 900 + rnd() * 1800),
   });
 }
 ---
@@ -84,7 +86,7 @@ for (let i = 0; i < 300 && dots.length < 110; i++) {
           <!-- scatter field: one dot per tracked reel -->
           <g class="cv-dots">
             {dots.map((p) => (
-              <circle class="cv-dot-i" cx={p.x} cy={p.y} r={p.r} fill="#141412" style={`--o:${p.o};transition-delay:${p.d}ms`}/>
+              <circle class="cv-dot-i" cx={p.x} cy={p.y} r={p.r} fill="#141412" style={`--o:${p.o};transition-delay:${p.d}ms;--tw:${p.tw}s;--twd:${p.twd}ms`}/>
             ))}
           </g>
 
@@ -154,7 +156,7 @@ for (let i = 0; i < 300 && dots.length < 110; i++) {
         </span>
       </div>
 
-      <p class="mt-10 font-mono text-[10.5px] text-faint">Same curve as the feed above &mdash; different entry point. Illustrative; day counts vary by format.</p>
+      <p class="mt-10 font-mono text-[10.5px] text-faint">Same curve as the feed above &mdash; different entry point.</p>
     </div>
 
     <!-- how the call gets made -->
@@ -218,7 +220,15 @@ for (let i = 0; i < 300 && dots.length < 110; i++) {
   .cv-window-lbl.cv-in { opacity: 1; }
 
   .cv-dot-i { opacity: 0; transition: opacity .5s ease; }
-  .cv-dots.cv-in .cv-dot-i { opacity: var(--o, .12); }
+  .cv-dots.cv-in .cv-dot-i {
+    opacity: var(--o, .12);
+    /* after reveal, each reel-dot breathes on its own cycle — the index feels live */
+    animation: cvTwinkle var(--tw, 4.5s) ease-in-out var(--twd, 2s) infinite;
+  }
+  @keyframes cvTwinkle {
+    0%, 100% { opacity: var(--o, .12); transform: translateY(0); }
+    50% { opacity: calc(var(--o, .12) * .3); transform: translateY(1.6px); }
+  }
 
   .cv-ring {
     display: none;
@@ -285,6 +295,7 @@ for (let i = 0; i < 300 && dots.length < 110; i++) {
   :global(#how.cv-instant) .cv-cluster,
   :global(#how.cv-instant) .cv-tag {
     transition: none !important;
+    animation: none !important;
   }
 </style>
 

@@ -1,9 +1,87 @@
 ---
 const BOOKING_LINK = 'https://cal.com/zishansami/earlycue-discovery';
+
+// platform glyphs (same paths as the old hero social icons)
+const IG_PATH = 'M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077';
+const TT_PATH = 'M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z';
+
+// scanner feed: what the agent is scrolling past, one hot row per cycle
+const feedRows = [
+  { src: '/assets/tiles/skincare-02.jpg', name: 'GRWM storytime', meta: '480K · skincare', p: 'ig' },
+  { src: '/assets/gen/pain-recipe.jpg', name: 'One-pan recipe flip', meta: '1.2M · food', p: 'tt' },
+  { src: '/assets/gen/si-03.jpg', name: 'Street “rate my fit”', meta: '2.1M · fashion', p: 'tt' },
+  { src: '/assets/tiles/fitness-03.jpg', name: '“5-to-9 routine” cut', meta: '340K · fitness', p: 'ig' },
+  { src: '/assets/gen/pain-ba.jpg', name: '30-day glow-up diary', meta: '890K · beauty', p: 'ig' },
+  { src: '/assets/tiles/food-05.jpg', name: 'Silent cook ASMR', meta: '96K · food', p: 'tt' },
+  { src: '/assets/gen/pp-01.jpg', name: '“Propaganda” listicle', meta: '8K · skincare', p: 'ig', hot: true },
+  { src: '/assets/tiles/fashion-04.jpg', name: 'Thrift-flip haul', meta: '610K · fashion', p: 'tt' },
+];
 ---
-<header class="relative flex flex-col overflow-hidden" style="min-height:min(100svh,1150px)">
+<header id="hero" class="relative flex flex-col overflow-hidden" style="min-height:min(100svh,1150px)">
+  <!-- CSS background is the permanent fallback; the WebGL canvas paints over it when ready -->
   <div class="hero-bg absolute inset-0 z-0 bg-cover bg-center" style="background-image:url('/assets/hero.jpg')" aria-hidden="true"></div>
-  <div class="absolute inset-0 z-0" style="background:linear-gradient(100deg,rgba(10,20,26,.5) 0%,rgba(10,20,26,.24) 46%,rgba(10,20,26,.02) 72%)" aria-hidden="true"></div>
+  <canvas id="heroGL" class="absolute inset-0 z-0 h-full w-full opacity-0 transition-opacity duration-700" aria-hidden="true"></canvas>
+  <div class="absolute inset-0 z-[2]" style="background:linear-gradient(100deg,rgba(10,20,26,.5) 0%,rgba(10,20,26,.24) 46%,rgba(10,20,26,.02) 72%)" aria-hidden="true"></div>
+
+  <!-- the agent's loop, live: scroll -> scan -> detect -->
+  <div class="pointer-events-none absolute inset-0 z-[5] mr-7" aria-hidden="true">
+    <div id="scanPanel" class="hero-pin absolute right-[5%] top-1/2 hidden w-[300px] -translate-y-1/2 lg:block" style="--fd:.4s">
+      <div class="overflow-hidden rounded-2xl border border-white/25 bg-[rgba(8,16,14,.5)] shadow-[0_24px_70px_-18px_rgba(8,16,14,.6)] backdrop-blur-md">
+        <div class="flex items-center justify-between border-b border-white/15 px-3.5 py-2.5 font-mono text-[10px] uppercase tracking-[.1em] text-white/80">
+          <span class="flex items-center gap-1.5">
+            <i class="pulse-dot h-1.5 w-1.5 rounded-full bg-[#4fae74] not-italic"></i>Scanning
+            <svg class="h-3 w-3" viewBox="0 0 24 24" fill="#fff" aria-label="Instagram"><path d={IG_PATH}/></svg>
+            <svg class="h-3 w-3 -ml-0.5" viewBox="0 0 24 24" fill="#fff" aria-label="TikTok"><path d={TT_PATH}/></svg>
+          </span>
+          <span>logged: <b id="scanCount" class="font-bold text-white">1,284</b></span>
+        </div>
+        <div class="relative h-[360px] [mask-image:linear-gradient(180deg,transparent,#000_14%,#000_86%,transparent)]">
+          <div id="scanFeed" class="sc-feed absolute inset-x-0 top-0">
+            {[...feedRows, ...feedRows].map((r) => (
+              <div class="sc-row mx-2.5 my-1.5 flex items-center gap-2.5 rounded-[9px] px-2 py-1.5" data-hot={r.hot ? '1' : undefined}>
+                <img class="block w-9 flex-none rounded-md object-cover [aspect-ratio:9/16]" src={r.src} alt="" loading="lazy" />
+                <div class="min-w-0 flex-1">
+                  <p class="truncate text-[11.5px] font-semibold leading-tight text-white/90">{r.name}</p>
+                  <p class="mt-0.5 flex items-center gap-1 font-mono text-[9px] text-white/50">
+                    <svg class="h-[9px] w-[9px] flex-none opacity-80" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d={r.p === 'ig' ? IG_PATH : TT_PATH}/></svg>
+                    {r.meta}
+                  </p>
+                </div>
+                <span class="sc-tick font-mono text-[9px] text-white/70">&#10003; logged</span>
+              </div>
+            ))}
+          </div>
+
+          <!-- scan zone -->
+          <div id="scanZone" class="absolute inset-x-2 top-1/2 h-[61px] -translate-y-1/2">
+            <i class="absolute left-0 top-0 h-2.5 w-2.5 border-l-2 border-t-2 border-white/60 not-italic"></i>
+            <i class="absolute right-0 top-0 h-2.5 w-2.5 border-r-2 border-t-2 border-white/60 not-italic"></i>
+            <i class="absolute bottom-0 left-0 h-2.5 w-2.5 border-b-2 border-l-2 border-white/60 not-italic"></i>
+            <i class="absolute bottom-0 right-0 h-2.5 w-2.5 border-b-2 border-r-2 border-white/60 not-italic"></i>
+            <i class="sc-line absolute inset-x-1 top-0 h-[2px] rounded not-italic"></i>
+          </div>
+
+          <!-- detection banner -->
+          <div id="scanBanner" class="sc-banner absolute inset-x-2 top-1/2 rounded-xl border border-white/25 bg-[rgba(10,14,12,.96)] p-3 backdrop-blur-sm">
+            <div class="flex items-center gap-3">
+              <img class="block w-10 flex-none rounded-lg object-cover [aspect-ratio:9/16] ring-1 ring-[#4fae74]/40" src="/assets/gen/pp-01.jpg" alt="" loading="lazy" />
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center justify-between gap-2">
+                  <p class="font-mono text-[8.5px] uppercase tracking-[.16em] text-[#7fd6a4]">&#9650; New format rising</p>
+                  <svg class="h-4 w-11 flex-none" viewBox="0 0 44 16" fill="none" aria-hidden="true">
+                    <path d="M2 13 C 12 12, 20 10, 28 6 S 38 2.5, 42 2" stroke="#7fd6a4" stroke-width="1.6" stroke-linecap="round"/>
+                    <circle cx="42" cy="2" r="2" fill="#7fd6a4"/>
+                  </svg>
+                </div>
+                <p class="mt-1 text-[13.5px] font-bold leading-tight text-white">&ldquo;Propaganda&rdquo; listicle</p>
+                <p class="mt-0.5 whitespace-nowrap font-mono text-[9.5px] text-white/65">3 creators &middot; day 5 &middot; accelerating</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="relative z-10 mx-auto w-full max-w-wrap px-7">
     <nav class="flex h-[72px] items-center justify-between gap-6">
@@ -27,9 +105,243 @@ const BOOKING_LINK = 'https://cal.com/zishansami/earlycue-discovery';
       <a class="btn btn-big" href={BOOKING_LINK}>Book a call</a>
       <a class="btn btn-big btn-ghost" href="#how">See how it works</a>
     </div>
-    <div class="mt-[22px] flex items-center gap-3.5 opacity-90" aria-label="Watches Instagram and TikTok">
-      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="#fff" aria-label="Instagram"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg>
-      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="#fff" aria-label="TikTok"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-    </div>
   </div>
 </header>
+
+<style>
+  .hero-pin {
+    opacity: 0;
+    animation: heroPinIn .8s ease calc(var(--fd, 0s) + .5s) forwards;
+  }
+  .hero-float > span { animation: heroBob 6.5s ease-in-out var(--fd, 0s) infinite; }
+  @keyframes heroPinIn { to { opacity: 1; } }
+  @keyframes heroBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  /* scanner feed: seamless upward marquee (content duplicated once) */
+  .sc-feed { animation: scFeed 22s linear infinite; }
+  @keyframes scFeed { to { transform: translateY(-50%); } }
+
+  .sc-row { opacity: .55; transition: opacity .25s ease, background-color .25s ease; }
+  .sc-row.sc-in { opacity: 1; background: rgba(255,255,255,.09); }
+  .sc-tick { opacity: 0; transition: opacity .25s ease; }
+  .sc-row.sc-in .sc-tick { opacity: 1; }
+
+  .sc-line {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.85), transparent);
+    animation: scLine 1.5s ease-in-out infinite alternate;
+  }
+  @keyframes scLine { from { top: 2px; } to { top: calc(100% - 4px); } }
+
+  .sc-banner {
+    opacity: 0;
+    transform: translateY(-50%) scale(.92);
+    transition: opacity .3s ease, transform .3s ease;
+    pointer-events: none;
+    box-shadow: 0 18px 50px -12px rgba(0,0,0,.55), 0 0 0 1px rgba(79,174,116,.12);
+  }
+  .sc-banner.on { animation: scPop .5s cubic-bezier(.2,1.6,.35,1) both; }
+  @keyframes scPop {
+    from { opacity: 0; transform: translateY(-44%) scale(.86); }
+    to { opacity: 1; transform: translateY(-50%) scale(1); }
+  }
+
+  /* the panel reacts to a detection: feed recedes, brackets go green */
+  #scanFeed { transition: opacity .35s ease, filter .35s ease; }
+  #scanFeed.sc-dim { opacity: .35; filter: saturate(.6); }
+  #scanZone i:not(.sc-line) { transition: border-color .3s ease; }
+  #scanZone.sc-hot i:not(.sc-line) { border-color: #4fae74; }
+  #scanZone.sc-hot .sc-line { opacity: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-pin { opacity: 1; animation: none; }
+    .sc-feed, .sc-line { animation: none; }
+    .sc-row { opacity: 1; }
+    .sc-banner { opacity: 1; transform: translateY(-50%); transition: none; animation: none !important; }
+  }
+</style>
+
+<script>
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hero = document.getElementById('hero');
+
+  /* ---------- depth-parallax background (raw WebGL, no deps) ---------- */
+  (function () {
+    const canvas = document.getElementById('heroGL');
+    const gl = canvas.getContext('webgl', { antialias: false, alpha: false });
+    if (!gl) return; // CSS background stays
+
+    const VS = 'attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
+    const FS = `precision mediump float;varying vec2 v;
+      uniform sampler2D img;uniform sampler2D dep;
+      uniform vec2 res;uniform vec2 off;
+      void main(){
+        float ca=res.x/res.y;float ia=1.5;
+        vec2 f=ca>ia?vec2(1.,ia/ca):vec2(ca/ia,1.);
+        vec2 uv=.5+(v-.5)*f/1.12;
+        float d=texture2D(dep,uv).r;
+        vec2 duv=uv+off*(d-.35);
+        gl_FragColor=texture2D(img,duv);
+      }`;
+
+    function sh(type, src) {
+      const s = gl.createShader(type);
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      return s;
+    }
+    const prog = gl.createProgram();
+    gl.attachShader(prog, sh(gl.VERTEX_SHADER, VS));
+    gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FS));
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+    gl.useProgram(prog);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, 'p');
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+    const uRes = gl.getUniformLocation(prog, 'res');
+    const uOff = gl.getUniformLocation(prog, 'off');
+    gl.uniform1i(gl.getUniformLocation(prog, 'img'), 0);
+    gl.uniform1i(gl.getUniformLocation(prog, 'dep'), 1);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
+    function tex(unit, image) {
+      const t = gl.createTexture();
+      gl.activeTexture(gl.TEXTURE0 + unit);
+      gl.bindTexture(gl.TEXTURE_2D, t);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image);
+    }
+
+    function resize() {
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      canvas.width = canvas.clientWidth * dpr;
+      canvas.height = canvas.clientHeight * dpr;
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.uniform2f(uRes, canvas.width, canvas.height);
+    }
+
+    let mx = 0, my = 0, tx = 0, ty = 0;
+    hero.addEventListener('pointermove', (e) => {
+      const r = hero.getBoundingClientRect();
+      tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+      ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+    });
+
+    let running = true, rafId = 0;
+    function frame(t) {
+      if (!running) return;
+      mx += (tx - mx) * 0.045;
+      my += (ty - my) * 0.045;
+      const ix = Math.sin(t * 0.00028) * 0.5;
+      const iy = Math.cos(t * 0.00021) * 0.4;
+      gl.uniform2f(uOff, (mx + ix) * 0.032, -(my + iy) * 0.024);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+      rafId = requestAnimationFrame(frame);
+    }
+
+    const img = new Image();
+    const dep = new Image();
+    let loaded = 0;
+    const onload = () => {
+      if (++loaded < 2) return;
+      tex(0, img);
+      tex(1, dep);
+      resize();
+      canvas.classList.remove('opacity-0');
+      if (reduce) {
+        gl.uniform2f(uOff, 0, 0);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        return; // one static, undisplaced frame
+      }
+      rafId = requestAnimationFrame(frame);
+
+      const io = new IntersectionObserver(([e]) => {
+        running = e.isIntersecting;
+        if (running) { cancelAnimationFrame(rafId); rafId = requestAnimationFrame(frame); }
+      }, { threshold: 0.02 });
+      io.observe(canvas);
+      document.addEventListener('visibilitychange', () => {
+        running = !document.hidden && running;
+        if (!document.hidden) { running = true; cancelAnimationFrame(rafId); rafId = requestAnimationFrame(frame); }
+      });
+    };
+    img.onload = onload;
+    dep.onload = onload;
+    img.src = '/assets/hero.jpg';
+    dep.src = '/assets/hero-depth.jpg';
+    addEventListener('resize', () => {
+      resize();
+      if (reduce && loaded === 2) { gl.uniform2f(uOff, 0, 0); gl.drawArrays(gl.TRIANGLES, 0, 3); }
+    });
+  })();
+
+  /* ---------- scanner loop: scroll -> scan -> detect, forever ---------- */
+  (function () {
+    const panel = document.getElementById('scanPanel');
+    if (!panel) return;
+    const feed = document.getElementById('scanFeed');
+    const zone = document.getElementById('scanZone');
+    const banner = document.getElementById('scanBanner');
+    const countEl = document.getElementById('scanCount');
+    const rows = [...panel.querySelectorAll('.sc-row')];
+    let count = 1284;
+
+    if (reduce) {
+      rows.forEach((r) => r.classList.add('sc-in'));
+      banner.classList.add('on');
+      return;
+    }
+
+    let paused = false;
+    let visible = true;
+
+    function tick() {
+      if (visible && !paused) {
+        const zr = zone.getBoundingClientRect();
+        const zc = zr.top + zr.height / 2;
+        for (const row of rows) {
+          const r = row.getBoundingClientRect();
+          const inZone = r.top < zc && r.bottom > zc;
+          const was = row.classList.contains('sc-in');
+          row.classList.toggle('sc-in', inZone);
+          if (inZone && !was) {
+            count += 1;
+            countEl.textContent = count.toLocaleString();
+            if (row.dataset.hot) {
+              paused = true;
+              feed.style.animationPlayState = 'paused';
+              feed.classList.add('sc-dim');
+              zone.classList.add('sc-hot');
+              banner.classList.add('on');
+              setTimeout(() => {
+                banner.classList.remove('on');
+                feed.classList.remove('sc-dim');
+                zone.classList.remove('sc-hot');
+                feed.style.animationPlayState = 'running';
+                paused = false;
+              }, 2200);
+            }
+          }
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    new IntersectionObserver(([e]) => {
+      visible = e.isIntersecting;
+      feed.style.animationPlayState = visible && !paused ? 'running' : 'paused';
+    }, { threshold: 0.02 }).observe(panel);
+  })();
+</script>

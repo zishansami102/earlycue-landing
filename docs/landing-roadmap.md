@@ -22,8 +22,14 @@
 10. FAQ — keep (survivorship line now lives in Pain section — trim FAQ #1)
 11. CtaFinal — keep
 
-Generated assets (gpt-image-2, `public/assets/gen/`): si-01..07 + si-brand-01/02 (street-interview
-spread), pain-ba, pain-recipe, brief-s1..s4 (consistent-cast beat frames used in Intelligence).
+Generated assets (gpt-image-2, `public/assets/gen/`): pp-01..04 (propaganda-listicle beat frames,
+Intelligence), pg-01..07 + pg-brand-01/02 (propaganda-format spread, TheCurve), si-01 + pain-ba +
+pain-recipe (PainFeed cards). Unused leftovers: si-02..07, si-brand-*, brief-s1..s4.
+
+**Format naming principle (Zishan, Aug 2026):** formats are concept-level structures (hook-concept
++ setup + payoff, surface variations allowed), never broad categories. Flagship demo format:
+"Propaganda I'm not falling for" listicle. Old/broad formats only as saturated pain-feed examples.
+TODO: AgentPanel demo script and Decode still say "street interview" — update for consistency.
 
 ---
 

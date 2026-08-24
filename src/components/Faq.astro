@@ -29,7 +29,7 @@ const faqs = [
     </div>
     <div class="rv max-w-[760px]">
       {faqs.map((f) => (
-        <details class="border-b border-line">
+        <details class="border-b border-line" data-faq-question={f.q}>
           <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-0.5 py-[18px] text-[1.05rem] font-semibold">{f.q}</summary>
           <p class="max-w-[60ch] px-0.5 pb-[18px] text-[.98rem] text-body">{f.a}</p>
         </details>
@@ -37,3 +37,15 @@ const faqs = [
     </div>
   </div>
 </section>
+
+<script>
+  document.querySelectorAll('[data-faq-question]').forEach((item) => {
+    item.addEventListener('toggle', () => {
+      if (item.open) {
+        window.posthog?.capture('faq_item_expanded', {
+          question: item.dataset.faqQuestion,
+        });
+      }
+    });
+  });
+</script>

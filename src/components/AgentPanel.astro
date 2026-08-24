@@ -209,10 +209,16 @@ const chips = [
   document.getElementById('chips').addEventListener('click', (e) => {
     const b = e.target.closest('.chip');
     if (!b) return;
+    window.posthog?.capture('agent_prompt_selected', {
+      prompt_index: Number(b.dataset.a),
+    });
     playFrom(+b.dataset.a);
   });
 
-  document.getElementById('askForm').addEventListener('submit', (e) => e.preventDefault());
+  document.getElementById('askForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    window.posthog?.capture('agent_prompt_submitted');
+  });
 
   playFrom(0);
 </script>

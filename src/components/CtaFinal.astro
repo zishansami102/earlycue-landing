@@ -9,7 +9,16 @@ const BOOKING_LINK = 'https://cal.com/zishansami/earlycue-discovery';
       If choosing what to shoot is your bottleneck, let's talk.
     </p>
     <div class="rv mt-7 flex justify-center">
-      <a class="btn btn-big" href={BOOKING_LINK}>Book a call</a>
+      <a class="btn btn-big" href={BOOKING_LINK} data-booking-location="final_cta">Book a call</a>
     </div>
   </div>
 </section>
+
+<script>
+  document.querySelector('#call [data-booking-location]')?.addEventListener('click', (event) => {
+    const link = event.currentTarget;
+    window.posthog?.capture('booking_call_clicked', {
+      location: link.dataset.bookingLocation,
+    });
+  });
+</script>

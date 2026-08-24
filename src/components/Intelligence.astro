@@ -111,7 +111,7 @@ const options = [
           Attention runs on contrast. Contrast belongs to whoever moves first.
         </p>
 
-        <a class="btn btn-big self-start" href={BOOKING_LINK}>Book a call</a>
+        <a class="btn btn-big self-start" href={BOOKING_LINK} data-booking-location="intelligence_cta">Book a call</a>
       </div>
 
       <!-- right: the studying panel -->
@@ -273,6 +273,13 @@ const options = [
   const scan = section.querySelector('.it-scan');
   const replay = document.getElementById('itReplay');
   let run = 0;
+
+  section.querySelector('[data-booking-location]')?.addEventListener('click', (event) => {
+    const link = event.currentTarget;
+    window.posthog?.capture('booking_call_clicked', {
+      location: link.dataset.bookingLocation,
+    });
+  });
 
   function finalState() {
     section.classList.add('it-instant');

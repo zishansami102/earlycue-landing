@@ -25,7 +25,7 @@ const feedRows = [
 
   <!-- the agent's loop, live: scroll -> scan -> detect -->
   <div class="pointer-events-none absolute inset-0 z-[5] mr-7" aria-hidden="true">
-    <div id="scanPanel" class="hero-pin absolute right-[5%] top-1/2 hidden w-[300px] -translate-y-1/2 lg:block" style="--fd:.4s">
+    <div id="scanPanel" class="hero-pin absolute right-[5%] top-1/2 hidden w-[310px] -translate-y-1/2 lg:block" style="--fd:.4s">
       <div class="overflow-hidden rounded-2xl border border-white/25 bg-[rgba(8,16,14,.5)] shadow-[0_24px_70px_-18px_rgba(8,16,14,.6)] backdrop-blur-md">
         <div class="flex items-center justify-between border-b border-white/15 px-3.5 py-2.5 font-mono text-[10px] uppercase tracking-[.1em] text-white/80">
           <span class="flex items-center gap-1.5">
@@ -90,7 +90,7 @@ const feedRows = [
         <a class="hover:text-white" href="#how">How it works</a>
         <a class="hover:text-white" href="#call">Book a call</a>
       </div>
-      <a class="btn" href={BOOKING_LINK}>Book a call</a>
+      <a class="btn" href={BOOKING_LINK} data-booking-location="hero_navigation">Book a call</a>
     </nav>
   </div>
 
@@ -102,7 +102,7 @@ const feedRows = [
       EarlyCue watches Instagram and TikTok at scale, spots rising reel formats in your niche, and helps you create your version.
     </p>
     <div class="mt-7 flex max-w-[470px] gap-2.5">
-      <a class="btn btn-big" href={BOOKING_LINK}>Book a call</a>
+      <a class="btn btn-big" href={BOOKING_LINK} data-booking-location="hero_primary">Book a call</a>
       <a class="btn btn-big btn-ghost" href="#how">See how it works</a>
     </div>
   </div>
@@ -344,4 +344,12 @@ const feedRows = [
       feed.style.animationPlayState = visible && !paused ? 'running' : 'paused';
     }, { threshold: 0.02 }).observe(panel);
   })();
+
+  hero.querySelectorAll('[data-booking-location]').forEach((link) => {
+    link.addEventListener('click', () => {
+      window.posthog?.capture('booking_call_clicked', {
+        location: link.dataset.bookingLocation,
+      });
+    });
+  });
 </script>
